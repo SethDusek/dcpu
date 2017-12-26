@@ -1,0 +1,6 @@
+[package]
+name = "dcpu16"
+version = "0.1.0"
+authors = ["SethDusek <shibe@openmailbox.org>"]
+
+[dependencies]
