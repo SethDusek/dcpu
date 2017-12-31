@@ -1,0 +1,8 @@
+[package]
+name = "dcpu"
+version = "0.1.0"
+authors = ["SethDusek <shibe@openmailbox.org>"]
+
+[dependencies]
+dcpu_macros={path = "../dcpu_macros"}
+

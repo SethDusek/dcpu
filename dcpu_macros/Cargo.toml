@@ -1,0 +1,10 @@
+[package]
+authors = ["SethDusek <shibe@openmailbox.org>"]
+name = "dcpu_macros"
+version = "0.1.0"
+[dependencies]
+quote = "*"
+syn = "*"
+[lib]
+proc-macro = true
+
