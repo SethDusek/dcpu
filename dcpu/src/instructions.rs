@@ -70,6 +70,8 @@ impl Instr {
             _ => Self::parse_arg(cpu, arg)
         }
     }
+    gen_instructions!();
+
 }
 
 

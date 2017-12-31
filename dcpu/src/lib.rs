@@ -1,5 +1,9 @@
 #![feature(exclusive_range_pattern)]
-mod registers;
+#[macro_use]
+extern crate dcpu_macros;
+pub mod registers;
+#[macro_use]
+mod macros;
 pub mod instructions;
 pub use instructions::Instr;
 use registers::*;
