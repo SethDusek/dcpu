@@ -4,8 +4,8 @@ extern crate dcpu_macros;
 pub mod registers;
 #[macro_use]
 mod macros;
-pub mod instructions;
-pub use instructions::Instr;
+pub mod instruction;
+pub use instruction::Instr;
 use registers::*;
 pub struct CPU {
     pub sp: u16,
