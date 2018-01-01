@@ -3,11 +3,30 @@ pub struct Instr(u16, bool);
 ///Argument type for DCPU
 #[derive(Debug)]
 pub enum Argument<'a> {
-    Ptr(&'a mut u16),
+    Ptr(&'a mut u16, bool),
     Val(u16),
     None
 }
-use self::Argument::{Ptr, Val};
+
+impl <'a> Argument <'a> {
+    ///Derefs a Ptr into a value, or does nothing if it's a value 
+    pub fn into_val(self) -> Self {
+        if let Ptr(ptr, _) = self {
+            Argument::Val(*ptr)
+        }
+        else {
+            self
+        }
+    }
+    ///Returns true if the pointers point to the same address
+    pub fn cmp_ptr(&self, addr: &u16) -> bool {
+        if let Ptr(ref ptr, _) = *self {
+            ::std::ptr::eq(*ptr, addr)
+        }
+        else { false }
+    }
+}
+pub use self::Argument::{Ptr, Val};
 
 impl Instr {
     pub fn new(instr: u16) -> Self {
@@ -40,14 +59,14 @@ impl Instr {
     }
     fn parse_arg(cpu: &mut ::CPU, arg: u8) -> Argument {
         match arg {
-            0x00..0x07 => Ptr(&mut cpu.registers()[arg]),
-            0x08..0x0f => Ptr(&mut cpu.memory[cpu.registers()[arg-8] as usize]), //[register]
-            0x10..0x17 => Ptr(&mut cpu.memory[(cpu.registers()[arg-10] + cpu.next().word()) as usize]), // [register + next word]
-            0x19 => Ptr(&mut cpu.memory[cpu.sp as usize]),
-            0x1b => Ptr(&mut cpu.sp),
-            0x1c => Ptr(&mut cpu.pc),
-            0x1d => Ptr(&mut cpu.excess),
-            0x1e => Ptr(&mut cpu.memory[cpu.next().word() as usize]),
+            0x00..0x07 => Ptr(&mut cpu.registers()[arg], false),
+            0x08..0x0f => Ptr(&mut cpu.memory[cpu.registers()[arg-8] as usize], false), //[register]
+            0x10..0x17 => Ptr(&mut cpu.memory[(cpu.registers()[arg-10] + cpu.next().word()) as usize], false), // [register + next word]
+            0x19 => Ptr(&mut cpu.memory[cpu.sp as usize], false),
+            0x1b => Ptr(&mut cpu.sp, false),
+            0x1c => Ptr(&mut cpu.pc, true),
+            0x1d => Ptr(&mut cpu.excess, false),
+            0x1e => Ptr(&mut cpu.memory[cpu.next().word() as usize], false),
             0x1f => Val(cpu.next().word()),
             _ => Argument::None
         }
@@ -58,7 +77,7 @@ impl Instr {
             0x18 => Val(cpu.pop()),
             0x20..0x3f => Val((arg as u16).wrapping_sub(0x21)),
             _ => Self::parse_arg(cpu, arg)
-        }
+        }.into_val()
     }
     pub fn arg_b(self, cpu: &mut ::CPU) -> Argument {
         if self.1 == true {
@@ -66,11 +85,11 @@ impl Instr {
         }
         let arg = self.b().unwrap();
         match arg {
-            0x18 => {cpu.sp-=1; Ptr(&mut cpu.memory[cpu.sp as usize])},
+            0x18 => {cpu.sp-=1; Ptr(&mut cpu.memory[cpu.sp as usize], false)},
             _ => Self::parse_arg(cpu, arg)
         }
     }
-    gen_instructions!();
+    gen_instructions!(::instructions::Add, ::instructions::Set);
 
 }
 
@@ -87,5 +106,7 @@ pub trait InstructionInfo {
 
 
 pub trait Instruction: InstructionInfo {
-    fn run(cpu: ::CPU, instr: Instr);
+    ///Run the instruction. The return type is the program counter. If it is None, the DCPU will
+    ///automatically increase the program counter by 1
+    fn run(cpu: &mut ::CPU, instr: Instr) -> Option<u16>;
 }

@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Registers {
     _reg: [u16; 8]
 }
