@@ -24,9 +24,8 @@ fn main() {
     unsafe {
         std::ptr::copy(buf.as_ptr(), &mut cpu.memory as *mut _ as *mut u16, buf.len());
     }
-    cpu.tick();
-    println!("{:?}", cpu.registers);
-    cpu.tick();
-    println!("{:?}", cpu.registers);
+    while !cpu.exit {
+        cpu.tick();
+    }
 
 }
