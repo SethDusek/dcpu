@@ -13,17 +13,20 @@ use registers::*;
 
 
 pub struct CPU {
+    pub exit: bool, //If true, execution will be halted
     pub sp: u16,
     pub registers: Registers,
     pub pc: u16,
     pub excess: u16,
     pub memory: [u16; 0x10000],
-    pub interrupt_address: u16
+    pub interrupt_address: u16,
+
 }
 
 impl CPU {
     pub fn new() -> Self {
         CPU {
+            exit: false,
             sp: 0xffff,
             registers: Registers::new(),
             pc: 0,
@@ -50,8 +53,9 @@ impl CPU {
     }
     ///Returns the next instruction
     pub fn next(&mut self) -> Instr {
+        let instr = Instr::new(self.memory[self.pc as usize]);
         self.pc+=1;
-        Instr::new(self.memory[self.pc as usize])
+        instr
     }
     /// Fetches an instruction, does not increment/change PC
     pub fn fetch(&mut self) -> Instr {
@@ -62,14 +66,10 @@ impl CPU {
     }
     //Fetch an instruction, decode/execute it and then move on to the next
     pub fn tick(&mut self) {
-        let instr = self.fetch();
+        let prev_pc = self.pc;        
+        let instr = self.next();
         let pc = instr.run(self);
-        if let Some(pc) = pc {
-            self.pc = pc;
-        }
-        else {
-            self.pc+=1;
-        }
+        if self.pc==prev_pc { println!("exiting"); self.exit=true }  //The instruction has not touched PC, so we can increment it. If it detects that PC has changed, does nothing
     }
 }
 
