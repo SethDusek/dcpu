@@ -1,4 +1,3 @@
-#![feature(exclusive_range_pattern)]
 #![feature(attr_literals)]
 #[macro_use]
 extern crate dcpu_macros;

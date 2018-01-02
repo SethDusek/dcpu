@@ -1,3 +1,4 @@
+use instructions::*;
 #[derive(Copy, Clone)]
 pub struct Instr(u16, bool);
 ///Argument type for DCPU
@@ -59,9 +60,9 @@ impl Instr {
     }
     fn parse_arg(cpu: &mut ::CPU, arg: u8) -> Argument {
         match arg {
-            0x00..0x07 => Ptr(&mut cpu.registers()[arg]),
-            0x08..0x0f => Ptr(&mut cpu.memory[cpu.registers()[arg-8] as usize]), //[register]
-            0x10..0x17 => Ptr(&mut cpu.memory[(cpu.registers()[arg-10] + cpu.next().word()) as usize]), // [register + next word]
+            0x00...0x07 => Ptr(&mut cpu.registers()[arg]),
+            0x08...0x0f => Ptr(&mut cpu.memory[cpu.registers()[arg-8] as usize]), //[register]
+            0x10...0x17 => Ptr(&mut cpu.memory[(cpu.registers()[arg-10] + cpu.next().word()) as usize]), // [register + next word]
             0x19 => Ptr(&mut cpu.memory[cpu.sp as usize]),
             0x1b => Ptr(&mut cpu.sp),
             0x1c => Ptr(&mut cpu.pc),
@@ -75,7 +76,7 @@ impl Instr {
         let arg = self.a();
         match arg {
             0x18 => Val(cpu.pop()),
-            0x20..0x3f => Val((arg as u16).wrapping_sub(0x21)),
+            0x20...0x3f => Val((arg as u16).wrapping_sub(0x21)),
             _ => Self::parse_arg(cpu, arg)
         }.into_val()
     }
@@ -89,7 +90,7 @@ impl Instr {
             _ => Self::parse_arg(cpu, arg)
         }
     }
-    gen_instructions!(::instructions::Set, ::instructions::Add, ::instructions::Sub,::instructions::Mul, ::instructions::MulI, ::instructions::Div,::instructions::Dvi, ::instructions::Mod, ::instructions::Mdi, ::instructions::And, ::instructions::Bor, ::instructions::Xor, ::instructions::Shr, ::instructions::Asr, ::instructions::Shl);
+    gen_instructions!(Set, Add, Sub, Mul, MulI, Div, Dvi, Mod, Mdi, And, Bor, Xor, Shr, Asr, Shl, Ifb, Ifc, Ifn, Ifg, Ifa, Ifl, Ifu, Ife);
 
 }
 

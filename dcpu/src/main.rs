@@ -26,6 +26,7 @@ fn main() {
     }
     while !cpu.exit {
         cpu.tick();
+        println!("{}", cpu.registers[Register::A] as u16);
     }
 
 }
