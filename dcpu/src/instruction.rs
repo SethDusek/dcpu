@@ -89,7 +89,7 @@ impl Instr {
             _ => Self::parse_arg(cpu, arg)
         }
     }
-    gen_instructions!(::instructions::Set, ::instructions::Add, ::instructions::Sub);
+    gen_instructions!(::instructions::Set, ::instructions::Add, ::instructions::Sub,::instructions::Mul, ::instructions::MulI, ::instructions::Div,::instructions::Dvi, ::instructions::Mod, ::instructions::Mdi, ::instructions::And, ::instructions::Bor, ::instructions::Xor, ::instructions::Shr, ::instructions::Asr, ::instructions::Shl);
 
 }
 

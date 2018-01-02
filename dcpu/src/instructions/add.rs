@@ -1,3 +1,7 @@
+/* ADD b, a
+ * sets b to b+a, sets EX to 0x0001 if there's an overflow, 0x0 otherwise
+ * TODO: Set EX
+ */
 use CPU;
 use instruction::*;
 

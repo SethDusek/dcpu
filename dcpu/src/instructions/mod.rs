@@ -2,7 +2,13 @@ mod add;
 mod set;
 mod sub;
 mod mul;
+mod div;
+mod modinstr;
+mod bits;
 pub use self::add::Add;
 pub use self::set::Set;
 pub use self::sub::Sub;
-
+pub use self::mul::*;
+pub use self::div::*;
+pub use self::modinstr::*;
+pub use self::bits::*;

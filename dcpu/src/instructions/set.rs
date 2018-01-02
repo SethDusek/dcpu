@@ -1,3 +1,7 @@
+/*
+ * SET b, a
+ * sets b to a
+ */
 use CPU;
 use instruction::*;
 
@@ -8,7 +12,6 @@ pub struct Set;
 
 impl Instruction for Set {
     fn run(cpu: &mut CPU, instr: Instr) {
-        let pc_ptr = &cpu.pc as *const _;
         let a = {
             let arg_a = instr.arg_a(cpu).into_val();
             if let Val(val) = arg_a {
