@@ -13,15 +13,20 @@ pub struct Add;
 impl Instruction for Add {
     fn run(cpu: &mut CPU, instr: Instr) {
         let a: u16;
+        let mut ex = 0;
 
         match instr.arg_a(cpu).into_val() {
             Val(val) => a = val,
             _ => a = 0
         }
-        let arg_b = instr.arg_b(cpu);
-        if let Ptr(ptr) = arg_b { //Don't write if it's a literal
-            *ptr=ptr.wrapping_add(a);
+        if let Ptr(ptr) = instr.arg_b(cpu) { //Don't write if it's a literal
+            let sum = ptr.checked_add(a);
+            if let Some(sum) = sum {
+                *ptr=sum;
+            }
+            else { ex = 1 }
         }
+        cpu.excess = ex;
     }
 }
             
