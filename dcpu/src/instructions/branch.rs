@@ -143,11 +143,13 @@ fn is_if(instr: Instr) -> bool{
 }
 //Skips the next instruction, or 2 instructions 
 fn skip(cpu: &mut CPU) {
-    let instr = cpu.next();
-    cpu.cycle(1);
-    if is_if(instr) {
+    loop { 
+        let instr = cpu.next();
         cpu.cycle(1);
-        cpu.next();
+        if !is_if(instr) {
+            break
+        }
+
     }
 }
 
