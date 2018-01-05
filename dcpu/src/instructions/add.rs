@@ -24,7 +24,7 @@ impl Instruction for Add {
             if let Some(sum) = sum {
                 *ptr=sum;
             }
-            else { ex = 1 }
+            else { *ptr = 0; ex = 1 }
         }
         cpu.excess = ex;
     }

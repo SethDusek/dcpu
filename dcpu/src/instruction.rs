@@ -90,7 +90,7 @@ impl Instr {
             _ => Self::parse_arg(cpu, arg)
         }
     }
-    gen_instructions!(Set, Add, Sub, Mul, MulI, Div, Dvi, Mod, Mdi, And, Bor, Xor, Shr, Asr, Shl, Ifb, Ifc, Ifn, Ifg, Ifa, Ifl, Ifu, Ife);
+    gen_instructions!(Set, Add, Sub, Mul, MulI, Div, Dvi, Mod, Mdi, And, Bor, Xor, Shr, Asr, Shl, Ifb, Ifc, Ifn, Ifg, Ifa, Ifl, Ifu, Ife, Adx, Sbx, Sti, Std);
 
 }
 

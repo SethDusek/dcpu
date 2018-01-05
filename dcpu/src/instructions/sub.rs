@@ -19,7 +19,7 @@ impl Instruction for Sub {
             if let Some(sub) = sub {
                 *ptr=sub;
             }
-            else { ex = 0xffff }
+            else { *ptr=0xffff; ex = 0xffff }
         }
         cpu.excess = ex;
     }
