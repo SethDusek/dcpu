@@ -62,13 +62,13 @@ impl CPU {
         Instr::new(self.memory[self.pc as usize])
     }
 
-    pub fn cycle(&mut self, cycles: u64) {// currently a noop
+    pub fn cycle(&mut self, _: u64) {// currently a noop
     }
     //Fetch an instruction, decode/execute it and then move on to the next
     pub fn tick(&mut self) {
         let prev_pc = self.pc;        
         let instr = self.next();
-        let pc = instr.run(self);
+        instr.run(self);
         if self.pc==prev_pc { println!("exiting"); self.exit=true }
     }
 }
