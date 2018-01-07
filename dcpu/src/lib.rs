@@ -43,6 +43,7 @@ impl CPU {
     }
     pub fn pop(&mut self) -> u16 {
         let val = self.peek();
+        println!("popping 0x{:x}", val);
         self.sp+=1;
         val
     }
@@ -68,7 +69,7 @@ impl CPU {
         let prev_pc = self.pc;        
         let instr = self.next();
         let pc = instr.run(self);
-        if self.pc==prev_pc { println!("exiting"); self.exit=true }  //The instruction has not touched PC, so we can increment it. If it detects that PC has changed, does nothing
+        if self.pc==prev_pc { println!("exiting"); self.exit=true }
     }
 }
 
