@@ -42,7 +42,7 @@ impl Instr {
         (self.0 & 0b11111) as u8
         }
         else {
-            (self.0 & (0b11111 << 5)) as u8
+            ((self.0 >> 5) & 0b11111) as u8
         }
     }
     ///Returns the word that this Instr represents
@@ -90,7 +90,7 @@ impl Instr {
             _ => Self::parse_arg(cpu, arg)
         }
     }
-    gen_instructions!(Set, Add, Sub, Mul, MulI, Div, Dvi, Mod, Mdi, And, Bor, Xor, Shr, Asr, Shl, Ifb, Ifc, Ifn, Ifg, Ifa, Ifl, Ifu, Ife, Adx, Sbx, Sti, Std);
+    gen_instructions!(Set, Add, Sub, Mul, MulI, Div, Dvi, Mod, Mdi, And, Bor, Xor, Shr, Asr, Shl, Ifb, Ifc, Ifn, Ifg, Ifa, Ifl, Ifu, Ife, Adx, Sbx, Sti, Std, Jsr);
 
 }
 
