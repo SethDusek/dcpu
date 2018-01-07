@@ -78,7 +78,7 @@ impl Instr {
             0x18 => Val(cpu.pop()),
             0x20...0x3f => Val((arg as u16).wrapping_sub(0x21)),
             _ => Self::parse_arg(cpu, arg)
-        }.into_val()
+        }
     }
     pub fn arg_b(self, cpu: &mut ::CPU) -> Argument {
         if self.1 == true {

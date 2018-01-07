@@ -23,6 +23,7 @@ pub struct CPU {
 }
 
 impl CPU {
+    ///Creates a new CPU with empty memory/registers
     pub fn new() -> Self {
         CPU {
             exit: false,
@@ -43,7 +44,6 @@ impl CPU {
     }
     pub fn pop(&mut self) -> u16 {
         let val = self.peek();
-        println!("popping 0x{:x}", val);
         self.sp+=1;
         val
     }
