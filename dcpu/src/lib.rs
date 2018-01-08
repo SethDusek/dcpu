@@ -10,7 +10,9 @@ pub use instruction::Instr;
 use registers::*;
 
 
-
+///The CPU type
+///0x10000 words of ram
+///8 registers (A, B, C, X, Y, Z, I, J)
 pub struct CPU {
     pub exit: bool, //If true, execution will be halted
     pub sp: u16,

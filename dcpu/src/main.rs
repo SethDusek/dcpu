@@ -1,14 +1,5 @@
 #![feature(attr_literals)]
-#[macro_use]
-extern crate dcpu_macros;
 extern crate dcpu;
-use dcpu::instruction::InstructionInfo;
-use dcpu::registers::Register;
-#[derive(InstructionInfo)]
-#[opcode = 0x0f]
-#[cycles = 1]
-struct Baz;
-
 use dcpu::CPU;
 use std::fs::File;
 use std::io::prelude::*;
@@ -26,7 +17,7 @@ fn main() {
     }
     while !cpu.exit {
         cpu.tick();
-        println!("{}", cpu.registers[Register::A] as u16);
+        println!("{:?}", cpu.registers);
     }
 
 }
